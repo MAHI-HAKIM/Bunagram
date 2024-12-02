@@ -1,0 +1,84 @@
+# Node.js modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+debug.log
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Build Output
+dist/
+build/
+.cache/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependency directory for serverless (if applicable)
+.serverless/
+
+# Temporary files
+tmp/
+temp/
+
+# Coverage reports
+coverage/
+
+# Test files
+*.spec.js
+*.test.js
+*.spec.ts
+*.test.ts
+.jest/
+
+# Parcel-bundler cache
+.cache/
+
+# Next.js output
+.next/
+
+# Nuxt.js output
+.nuxt/
+
+# SvelteKit build output
+.svelte-kit/
+
+# Gatsby files
+.cache/
+public/
+
+# React Native
+.expo/
+*.expo/
+expo-app.json
+
+# MongoDB dumps
+dump/
+
+# Miscellaneous
+*.bak
+*.pid
+*.seed
+*.tar
+*.gz
+
+# Lock files (if unnecessary)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
