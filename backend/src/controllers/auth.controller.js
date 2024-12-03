@@ -40,7 +40,7 @@ export const signup = async (req, res) => {
                 fullName: newUser.fullName,
                 email: newUser.email,
                 profilePic: newUser.profilePic,
-                message: "User created successfully",
+                message: "User created successfully!!",
             });
         }else{
             return res.status(400).json({msg: "Invalid user data"});
@@ -111,6 +111,7 @@ export const updateProfile = async (req, res) => {
         //     return res.status(404).json({msg: "User not found"});
         // }  
         // user.profilePic = profilePic;
+        
         if(!profilePic){
             return res.status(400).json({msg: "Profile Picture is required"});
         }
