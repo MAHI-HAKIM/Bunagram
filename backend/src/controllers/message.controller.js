@@ -55,7 +55,13 @@ export const sendmessage = async (req, res) => {
             receiverId,
             text,
             image: imageURL,
-        })
+        });
+
+        await newMessage.save();
+
+        //todo: realtime functionality goes here => socket.io
+
+        res.status(201).json(newMessage);
 
     }catch(err){
         console.log("Error in sendmessage controller ::", err.message);
