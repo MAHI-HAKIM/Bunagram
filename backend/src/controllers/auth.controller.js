@@ -110,7 +110,7 @@ export const updateProfile = async (req, res) => {
 
 export const checkAuth = (req, res) => {
   try {
-    console.log("User in checkAuth and checking", req.user);
+    // console.log("User in checkAuth and checking", req.user);
     res.status(200).json(req.user);
   } catch (error) {
     console.log("Couldnt verify shit");
