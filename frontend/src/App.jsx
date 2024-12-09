@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react'
 import Navbar from "./components/Navbar";
-import { Routes, Route , Navigate } from "react-router-dom";
+import Home from "./pages/Home"
+import Signup from "./pages/Signup"
+import Login from "./pages/Login"
+import Setting from "./pages/Setting"
+import Profile from "./pages/Profile"
 
-import Home from './pages/Home'
-import Signup from './pages/Signup'
-import Login from './pages/Login'
-import Setting from './pages/Setting'
-import Profile from './pages/Profile'
-import { axiosInstance } from './lib/axios';
+
+import { Routes, Route , Navigate } from "react-router-dom";
+import { useEffect} from 'react'
 import { useAuthStore } from './store/useAuthStore';
 import {Loader} from "lucide-react"
+import { Toaster } from 'react-hot-toast';
 
-function App() {
+
+const App = ()=> {
 
   const {authUser,checkAuth,isCheckingAuth} = useAuthStore();
 
@@ -19,6 +21,7 @@ function App() {
     checkAuth();
   },[checkAuth]);
 
+console.log({authUser});
 
  if(isCheckingAuth && !authUser) return (
    <div className = "flex items-center justify-center h-screen">
@@ -39,6 +42,7 @@ function App() {
       <Route path="/profile" element={authUser? <Profile /> :  <Navigate to = "/login"/>} />
     </Routes>
 
+    <Toaster/>
   </div>
   );
 }

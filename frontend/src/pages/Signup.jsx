@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore.js";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthImagePattern from "../components/AuthImagepattern";
 import toast from "react-hot-toast";
 
-const SignUpPage = () => {
+const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { signup, isSigningUp } = useAuthStore();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
   });
 
+  const {signup, isSigningUp } = useAuthStore();
 
+  // console.log("SIGNUP function", signup);
   const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
@@ -64,7 +65,7 @@ const SignUpPage = () => {
                 <input
                   type="text"
                   className={`input input-bordered w-full pl-10`}
-                  placeholder="Mahi Mohammed"
+                  placeholder="John Doe"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 />
@@ -82,7 +83,7 @@ const SignUpPage = () => {
                 <input
                   type="email"
                   className={`input input-bordered w-full pl-10`}
-                  placeholder="mahiabdul20@example.com"
+                  placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -144,10 +145,10 @@ const SignUpPage = () => {
       {/* right side */}
 
       <AuthImagePattern
-        title="join our community"
-        subtitle="connect with friends, share moments, and stay in touch with your loved ones."
+        title="Join our community"
+        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
       />
     </div>
   );
 };
-export default SignUpPage;
+export default Signup;
