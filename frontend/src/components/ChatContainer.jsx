@@ -18,16 +18,18 @@ const {
 } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
+
   useEffect(() => {
     getMessages(selectedUser._id);
-    // subscribeToMessages();
-    // return () => unsubscribeFromMessages();
-  }, [selectedUser._id, getMessages]);
-//   useEffect(() => {
-//     if (messageEndRef.current && messages) {
-//       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-//     }
-//   }, [messages]);
+    subscribeToMessages();
+    return () => unsubscribeFromMessages();
+  }, [selectedUser._id, getMessages , subscribeToMessages , unsubscribeFromMessages]);
+
+  useEffect(() => {
+    if (messageEndRef.current && messages) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
   
   if (isMessagesLoading) {
     return (

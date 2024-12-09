@@ -11,6 +11,7 @@ const io = new Server(server, {
   },
 });
 
+// used to get the socket id of the receiver
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
