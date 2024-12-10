@@ -15,10 +15,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 6,
-    },
+    }, 
     profilePic: {
       type: String,
       default: "",
+    },
+    publicKey: {
+      type: String, // Store the private key as a string
+      required: true,
+    },
+    privateKey: {
+      type: String, // Store the private key as a string
+      required: true,
     },
   },
   { timestamps: true }

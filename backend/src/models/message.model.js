@@ -15,6 +15,14 @@ const messageSchema = new mongoose.Schema(
     text: {
       type: String,
     },
+    encryptedText: {
+      type: String,
+      required: true
+    },
+    isEncrypted: {
+      type: Boolean,
+      default: true
+    },
     image: {
       type: String,
     },
