@@ -24,10 +24,27 @@ export const useChatStore = create((set, get) => ({
   },
 
   getMessages: async (userId) => {
+
     set({ isMessagesLoading: true });
     try {
+      let authUser = useAuthStore.getState().authUser;
+      let selectedUser = get().selectedUser;
+      // Fetch messages
       const res = await axiosInstance.get(`/messages/${userId}`);
-      // console.log("res.data is ", res.data);
+      // Ensure data is defined
+      if (!res.data) {
+        throw new Error("Response data is undefined");
+      }
+      // Loop over messages and decrypt each one
+    for (let message of res.data) {
+      let decryptedMessage = null;
+
+      message.receiverId.toString() === userId.toString() ? 
+      decryptedMessage = decryptMessage(message.encryptedText, selectedUser.privateKey) 
+      : decryptedMessage = decryptMessage(message.encryptedText, authUser.privateKey);
+
+      message.chatContent = decryptedMessage || "Failed to decrypt";
+    }
       set({ messages: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -39,20 +56,23 @@ export const useChatStore = create((set, get) => ({
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
-      // console.log("selectedUser is ", selectedUser);
       if (!selectedUser || !messageData.text.trim()) {
         throw new Error("Selected user or message text is missing");
       }
       const encryptedText = encryptMessage(messageData.text.trim(), selectedUser.publicKey);
-    
+   
       const encryptedMessageData = {
-        ...messageData,
+          ...messageData,
         encryptedText,
       };
-      
-      console.log("encryptedMessageData is ", encryptedMessageData);
-    //   const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, encryptedMessageData);
-    //   set({ messages: [...messages, res.data] });
+
+      const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`, encryptedMessageData);
+      const newMessage = {
+        ...res.data,
+        chatContent: decryptMessage(res.data.encryptedText, selectedUser.privateKey),
+      }
+
+       set({ messages: [...messages, newMessage] });
     } catch (error) {
       console.error("Failed to send message:", error);
       toast.error(error.response.data.message);
@@ -63,18 +83,21 @@ export const useChatStore = create((set, get) => ({
     const { selectedUser } = get();
     if (!selectedUser) return;
 
-    // console.log("selectedUser is ", selectedUser);
-
     const socket = useAuthStore.getState().socket;
 
-    socket.on("newMessage", (newMessage) => {
+    socket.on("newMessage", async (newMessage) => {
       const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
       if (!isMessageSentFromSelectedUser) return;
-      // console.log("newMessage is ", newMessage);  
-      set({
-        messages: [...get().messages, newMessage],
-      });
 
+      let reciverUser = useAuthStore.getState().authUser;
+       const decryptedNewMessage = {
+        ...newMessage,
+        chatContent: decryptMessage(newMessage.encryptedText, reciverUser.privateKey),
+      }
+  
+      set({
+        messages: [...get().messages, decryptedNewMessage],
+      });
     });
   },
 

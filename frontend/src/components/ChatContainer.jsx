@@ -1,6 +1,5 @@
 import { useChatStore } from "../store/useChatStore";
 import { useEffect, useRef } from "react";
-
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
@@ -55,9 +54,7 @@ const {
               <div className="size-10 rounded-full border">
                 <img
                   src={
-                    message.senderId === authUser._id
-                      ? authUser.profilePic || "/avatar.png"
-                      : selectedUser.profilePic || "/avatar.png"
+                    message.senderId === authUser._id ? authUser.profilePic || "/avatar.png": selectedUser.profilePic || "/avatar.png"
                   }
                   alt="profile pic"
                 />
@@ -76,7 +73,7 @@ const {
                   className="sm:max-w-[200px] rounded-md mb-2"
                 />
               )}
-              {message.text && <p>{message.text}</p>}
+              {message.chatContent && <p>{message.chatContent}</p>}
             </div>
           </div>
         ))}

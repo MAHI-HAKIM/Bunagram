@@ -20,7 +20,6 @@ export const useAuthStore = create((set, get) => ({
     try {
         const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
-      // await get().fetchKeys();
       get().connectSocket();
     } catch (error) {
       console.log("Error in checkAuth couldnt even check shit:", error);
@@ -36,7 +35,6 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/signup", data);
       set({ authUser: res.data });
       toast.success("Account created successfully");
-      // await get().fetchKeys();
       get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -51,7 +49,6 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
       toast.success("Logged in successfully");
-      // await get().fetchKeys();
       get().connectSocket();
     } catch (error) {
       toast.error(error.response.data.message);
@@ -84,28 +81,6 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-   // Fetch both public and private keys securely
-   fetchKeys: async () => {
-    try {
-      // Request for keys from the server
-      const res = await axiosInstance.get("/auth/keys");
-      console.log("keys are ", res.data);
-      // Store public and private keys in state
-      set({
-        publicKey: res.data.publicKey,
-        privateKey: res.data.privateKey, // Ensure private key is not exposed anywhere else
-      });
-    } catch (error) {
-      console.log("Error fetching keys:", error);
-      toast.error("Failed to fetch keys");
-    }
-  },
-
-  // Function to securely clear keys
-  clearKeys: () => {
-    set({ publicKey: null, privateKey: null }); // Clear keys from state
-  },
-
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
@@ -123,6 +98,7 @@ export const useAuthStore = create((set, get) => ({
       set({ onlineUsers: userIds });
     });
   },
+  
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
