@@ -19,6 +19,8 @@
     "crypto-js": "^4.2.0",
     "esbuild": "^0.24.0",
     "jose": "^5.9.6",
+    "jsencrypt": "^3.3.2",
+    "jsrsasign": "^11.1.0",
     "latest": "^0.2.0",
     "lucide-react": "^0.464.0",
     "node-jose": "^2.2.0",

@@ -16,6 +16,7 @@ const {
   subscribeToMessages,
   unsubscribeFromMessages,
 } = useChatStore();
+
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 

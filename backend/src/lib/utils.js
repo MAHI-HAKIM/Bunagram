@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import crypto from "crypto";
 
 
 export const generateToken = (userId , res) => {
@@ -19,11 +18,4 @@ export const generateToken = (userId , res) => {
 };
 
 
-export const generateKeyPair = () => {
-    const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
-      modulusLength: 2048, // RSA key size
-      publicKeyEncoding: { type: "spki", format: "pem" },
-      privateKeyEncoding: { type: "pkcs8", format: "pem" },
-    });
-    return { publicKey, privateKey };
-  };
+

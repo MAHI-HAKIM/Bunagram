@@ -12,16 +12,12 @@ const messageSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    text: {
-      type: String,
-    },
     encryptedText: {
       type: String,
-      required: true
     },
     isEncrypted: {
       type: Boolean,
-      default: true
+      default: false,
     },
     image: {
       type: String,

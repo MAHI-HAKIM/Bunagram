@@ -1,7 +1,11 @@
-import { generateToken , generateKeyPair } from "../lib/utils.js";
+import { generateToken } from "../lib/utils.js";
+import { generateKeyPair } from "../lib/cryptoUtilis.js";
+
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
+// import { generateRSAKeyPair } from "../lib/keyGenerator.js";
+
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -23,8 +27,8 @@ export const signup = async (req, res) => {
 
     const { publicKey, privateKey } = generateKeyPair();
 
-    console.log("publicKey", publicKey);
-    console.log("privateKey", privateKey);
+    // console.log("publicKey", publicKey);
+    // console.log("privateKey", privateKey);
 
 
     const newUser = new User({
@@ -145,7 +149,6 @@ export const getKeys = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 export const checkAuth = (req, res) => {
   try {
