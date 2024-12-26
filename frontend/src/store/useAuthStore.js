@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
- import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
 
@@ -83,6 +83,7 @@ export const useAuthStore = create((set, get) => ({
 
   connectSocket: () => {
     const { authUser } = get();
+    console.log("Auth user is ", authUser);
     if (!authUser || get().socket?.connected) return;
 
     const socket = io(BASE_URL, {
@@ -92,10 +93,21 @@ export const useAuthStore = create((set, get) => ({
     });
     socket.connect();
 
+    console.log("Socket is " , socket);
+
     set({ socket: socket });
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
+    });
+     // Add listeners for group-related events
+     socket.on("joinedGroup", (groupId) => {
+      console.log(`Successfully joined group ${groupId}`);
+    });
+
+    // Handle errors
+    socket.on("error", (error) => {
+      console.error("Socket error:", error);
     });
   },
   

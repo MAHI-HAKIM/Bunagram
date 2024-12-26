@@ -15,6 +15,10 @@ const messageSchema = new mongoose.Schema(
     encryptedText: {
       type: String,
     },
+    isGroupMessage: {
+      type: Boolean,
+      default: false,
+    },
     isEncrypted: {
       type: Boolean,
       default: false,

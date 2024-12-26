@@ -25,6 +25,24 @@ io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
   if (userId) userSocketMap[userId] = socket.id;
 
+  // Handle joining rooms for group chats
+  socket.on('joinRoom', (groupId) => {
+    socket.join(groupId);
+    console.log(`User joined room: ${groupId}`);
+  });
+
+  // Handle leaving rooms
+  socket.on('leaveRoom', (groupId) => {
+    socket.leave(groupId);
+    console.log(`User left room: ${groupId}`);
+  });
+
+  // Handle group messages
+  socket.on('groupMessage', (message) => {
+    // Broadcast to all users in the group room except sender
+    socket.to(message.groupId).emit('newMessage', message);
+  });
+
   // io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
@@ -33,6 +51,7 @@ io.on("connection", (socket) => {
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
+
 });
 
 export { io, app, server };

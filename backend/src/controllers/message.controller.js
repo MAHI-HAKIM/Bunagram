@@ -19,12 +19,15 @@ export const getMessages = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
     const myId = req.user._id;
+
+    console.log("userToChatId is ", userToChatId, "myId is ", myId);
     
     // Fetch messages where either the sender or receiver is the user
     const messages = await Message.find({
       $or: [
         { senderId: myId, receiverId: userToChatId },
         { senderId: userToChatId, receiverId: myId },
+        { receiverId: userToChatId, isGroupMessage: true }
       ],
     });
 
@@ -37,7 +40,7 @@ export const getMessages = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
     try {
-      const { text, image , encryptedText} = req.body;
+      const { text, image , encryptedText , isGroupMessage} = req.body;
 
       const { id: receiverId } = req.params;
       const senderId = req.user._id;
@@ -56,6 +59,7 @@ export const sendMessage = async (req, res) => {
         receiverId,
         text,
         encryptedText,
+        isGroupMessage,
         isEncrypted: true,
         image: imageUrl,
       });
@@ -73,3 +77,36 @@ export const sendMessage = async (req, res) => {
       res.status(500).json({ error: "Internal server error in message" });
     }
   };
+
+export const sendGroupMessage = async (req, res) => {
+  try{
+    const {text , image , encryptedText , isGroupMessage} = req.body;
+
+    const {id: receiverId} = req.params;
+    const senderId = req.user._id;
+
+    let imageUrl;
+    if(image){
+      const uploadResponse = await cloudinary.uploader.upload(image);
+      imageUrl = uploadResponse.secure_url;
+    }
+
+    const newMessage = new Message({
+      senderId,
+      receiverId,
+      text,
+      encryptedText,
+      isGroupMessage,
+      image: imageUrl
+    });
+
+    await newMessage.save();
+
+    console.log("Saved to database ", newMessage);
+
+
+  }catch(error){
+    console.log("Error in sendGroupMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal server error in group message" });
+  }
+};

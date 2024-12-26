@@ -30,21 +30,25 @@ const MessageInput = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
+
+    // console.log("selectedUser", selectedUser);
+
     if (!text.trim() && !imagePreview) return;
+      try {
+        console.log("message to user");
 
-    try {
-      await sendMessage({
-        text: text.trim(),
-        image: imagePreview,
-      });
-
-      // Clear form
-      setText("");
-      setImagePreview(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    } catch (error) {
-      console.error("Failed to send message:", error);
-    }
+        await sendMessage({
+          text: text.trim(),
+          image: imagePreview,
+        });
+  
+        // Clear form
+        setText("");
+        setImagePreview(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      } catch (error) {
+        console.error("Failed to send message:", error);
+      }
   };
 
   return (

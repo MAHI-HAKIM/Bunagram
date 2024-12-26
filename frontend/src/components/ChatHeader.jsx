@@ -5,31 +5,57 @@ const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
 
+  // Check if the selected item is a group or a user
+  const isGroup = selectedUser && selectedUser.groupName;
+
   return (
     <div className="p-2.5 border-b border-base-300">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* Avatar */}
+          {/* Avatar (Group or User) */}
           <div className="avatar">
             <div className="size-10 rounded-full relative">
-              <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
+              <img
+                src={isGroup ? selectedUser.groupImage || "/group-avatar.png" : selectedUser.profilePic || "/avatar.png"}
+                alt={isGroup ? selectedUser.groupName : selectedUser.fullName}
+              />
             </div>
           </div>
 
-          {/* User info */}
+          {/* User or Group Info */}
           <div>
-            <h3 className="font-medium">{selectedUser.fullName}</h3>
+            <h3 className="font-medium">{isGroup ? selectedUser.groupName : selectedUser.fullName}</h3>
+            
+            {/* Displaying Participants' Names in Small Font if Group */}
+            {/* {isGroup && (
+              <div className="text-sm text-base-content/70">
+                {selectedUser.participants.map((participant, index) => (
+                  <span key={participant._id}>
+                    {participant.fullName}
+                    {index < selectedUser.participants.length - 1 && ', '}
+                  </span>
+                ))}
+              </div>
+            )} */}
+            
+            {/* Display Online Status */}
             <p className="text-sm text-base-content/70">
-              {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
+              {isGroup
+                ? `${selectedUser.participants.length} participants`
+                : onlineUsers.includes(selectedUser._id)
+                ? "Online"
+                : "Offline"}
             </p>
           </div>
         </div>
 
         {/* Close button */}
-        <button onClick={() => setselecteduser(null)}>
+        <button onClick={() => setSelectedUser(null)} className="text-base-content/70">
+          {/* Add any close icon if needed */}
         </button>
       </div>
     </div>
   );
 };
+
 export default ChatHeader;
