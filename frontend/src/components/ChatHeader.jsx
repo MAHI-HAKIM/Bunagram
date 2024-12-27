@@ -26,18 +26,6 @@ const ChatHeader = () => {
           <div>
             <h3 className="font-medium">{isGroup ? selectedUser.groupName : selectedUser.fullName}</h3>
             
-            {/* Displaying Participants' Names in Small Font if Group */}
-            {/* {isGroup && (
-              <div className="text-sm text-base-content/70">
-                {selectedUser.participants.map((participant, index) => (
-                  <span key={participant._id}>
-                    {participant.fullName}
-                    {index < selectedUser.participants.length - 1 && ', '}
-                  </span>
-                ))}
-              </div>
-            )} */}
-            
             {/* Display Online Status */}
             <p className="text-sm text-base-content/70">
               {isGroup

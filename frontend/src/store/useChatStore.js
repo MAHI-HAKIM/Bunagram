@@ -10,6 +10,7 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+  groupParticipants : [],
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -39,7 +40,6 @@ export const useChatStore = create((set, get) => ({
          res = await axiosInstance.get(`/messages/${userId}`);
 
       }
-      // console.log("res.data", res.data);
       // Ensure data is defined
       if (!res.data) {
         throw new Error("Response data is undefined");
@@ -60,6 +60,25 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ isMessagesLoading: false });
+    }
+  },
+
+  getGroupParticipants: async (groupId)=>{
+    try{
+      // console.log("groupId is ", groupId);
+      const res = await axiosInstance.get(`/messages/participants/${groupId}`);
+
+      console.log("Group participants are ", res.data);
+      set({ groupParticipants: res.data });
+
+      // Ensure data is defined
+      if (!res.data) {
+        throw new Error("Response data is undefined");
+      }
+
+    }catch(error){
+      console.error("Error in getGroupParticipants: ", error.message);
+      toast.error(error.response.data.message);
     }
   },
 

@@ -54,8 +54,6 @@ export const useGroupStore = create((set, get) => ({
     }
   },
 
-  
-
   setSelectedGroup: (group) => set({ selectedGroup: group }),
 
 }));

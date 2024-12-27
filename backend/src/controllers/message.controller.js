@@ -1,7 +1,9 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
+import Group from "../models/group.model.js";
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId , io } from "../lib/socket.js";
+import mongoose from "mongoose";
 
 export const getUsersForSidebar = async (req, res) => {
     try {
@@ -15,28 +17,71 @@ export const getUsersForSidebar = async (req, res) => {
     }
   };
   
+
 export const getMessages = async (req, res) => {
+    try {
+      const { id: userToChatId } = req.params;
+      const myId = req.user._id;
+  
+      if (!mongoose.Types.ObjectId.isValid(userToChatId)) {
+        return res.status(400).json({ error: "Invalid userToChatId" });
+      }
+  
+      const messages = await Message.find({
+        $or: [
+          { senderId: myId, receiverId: userToChatId },
+          { senderId: userToChatId, receiverId: myId },
+          { receiverId: userToChatId, isGroupMessage: true },
+        ],
+      });
+  
+      res.status(200).json(messages);
+    } catch (error) {
+      console.error("Error in getMessages controller: ", error.message);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
+
+export const fetchGroupParticipants = async (req, res) => {
   try {
-    const { id: userToChatId } = req.params;
-    const myId = req.user._id;
+    // Extract the group ID from the request parameters
+    const {id : groupId } = req.params;
 
-    console.log("userToChatId is ", userToChatId, "myId is ", myId);
-    
-    // Fetch messages where either the sender or receiver is the user
-    const messages = await Message.find({
-      $or: [
-        { senderId: myId, receiverId: userToChatId },
-        { senderId: userToChatId, receiverId: myId },
-        { receiverId: userToChatId, isGroupMessage: true }
-      ],
-    });
+    // console.log("groupId is ", groupId);
 
-    res.status(200).json(messages);
+    // Validate if the group ID is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(groupId)) {
+      return res.status(400).json({ error: "Invalid groupId" });
+    }
+
+    // Fetch the group document using the groupId
+    const selectedGroup = await Group.findById(groupId);
+
+    // Check if the group exists
+    if (!selectedGroup) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    // console.log("Selected group is ", selectedGroup);
+
+    // Extract participant IDs from the group document
+    const participantIds = selectedGroup.participants;
+
+    // Fetch user details based on participant IDs (excluding password)
+    const groupParticipants = await User.find({ _id: { $in: participantIds } }).select("fullName profilePic");
+
+    // console.log("Group participants are ", groupParticipants);
+
+    // Return the participants' details
+    res.status(200).json(groupParticipants);
   } catch (error) {
-    console.log("Error in getMessages controller: ", error.message);
-    res.status(500).json({ error: "Internal server error" });
+    console.log("Error in fetchGroupParticipants controller: ", error.message);
+    res.status(500).json({ error: "Internal server error in group participants" });
   }
 };
+
+  
 
 export const sendMessage = async (req, res) => {
     try {
