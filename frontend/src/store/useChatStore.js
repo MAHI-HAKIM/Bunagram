@@ -253,7 +253,7 @@ export const useChatStore = create((set, get) => ({
         // Only show error toast for non-broadcast messages or when debugging
         if (!newMessage.isBroadcast) {
           console.error("Error processing new message:", error);
-          toast.error("Failed to decrypt message");
+          // toast.error("Failed to decrypt message");
         } else {
           // For broadcast messages, just log it without showing error to user
           console.log("Skipped broadcast message processing:", error.message);

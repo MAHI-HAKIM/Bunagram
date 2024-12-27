@@ -32,7 +32,7 @@ const Navbar = () => {
           </div>
 
           {/* Only show BroadcastInput when no user is selected */}
-          {!selectedUser && <BroadcastInput />}
+          {!selectedUser  && authUser &&  <BroadcastInput />}
 
           <div className="flex items-center gap-2">
             <Link
