@@ -79,9 +79,7 @@ export const fetchGroupParticipants = async (req, res) => {
     console.log("Error in fetchGroupParticipants controller: ", error.message);
     res.status(500).json({ error: "Internal server error in group participants" });
   }
-};
-
-  
+};  
 
 export const sendMessage = async (req, res) => {
     try {
@@ -153,5 +151,45 @@ export const sendGroupMessage = async (req, res) => {
   }catch(error){
     console.log("Error in sendGroupMessage controller: ", error.message);
     res.status(500).json({ error: "Internal server error in group message" });
+  }
+};
+// controllers/message.controller.js
+export const broadcastMessage = async (req, res) => {
+  try {
+    // console.log("Broadcasting message... " , req.body.receiverId);
+    const senderId = req.user._id;
+    // console.log("senderId is ", senderId);
+    const { encryptedText, image, receiverId } = req.body;
+
+    let imageUrl;
+    
+    if (image) {
+      // Upload base64 image to cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(image);
+      imageUrl = uploadResponse.secure_url;
+    }
+
+    const newMessage = new Message({
+      senderId: senderId,
+      receiverId: receiverId,
+      encryptedText,
+      isGroupMessage: false,
+      image : imageUrl,
+      isBroadcast: true,
+      isEncrypted: true,
+    });
+
+    await newMessage.save();
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+    
+
+     res.status(200).json(newMessage);
+  } catch (error) {
+    console.error("Error in broadcastMessage controller:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

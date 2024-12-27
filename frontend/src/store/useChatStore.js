@@ -124,57 +124,150 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response?.data?.message || "Failed to send message");
     }
   },
+
+ 
+  broadcastMessage: async (messageData) => {
+    try {
+      const authUser = useAuthStore.getState().authUser;
+      const socket = useAuthStore.getState().socket;
+
+      if (!messageData.text.trim()) {
+        throw new Error("Message text is missing");
+      }
+
+      // Get all users to broadcast to
+      const users = await axiosInstance.get('/messages/users');
+      const receivers = users.data.filter(user => user._id !== authUser._id);
+
+      // Create messages for all receivers
+      const messages = await Promise.all(
+        receivers.map(async (receiver) => {
+          // Encrypt message with receiver's public key
+          console.log("encrypted with receiver's public key of ", receiver.fullName);
+          const encryptedText = encryptMessage(messageData.text.trim(), receiver.publicKey);
+          
+          const messagePayload = {
+            text: messageData.text.trim(),
+            encryptedText,
+            image: messageData.image,
+            receiverId: receiver._id,
+            isBroadcast: true
+          };
+
+          return axiosInstance.post('/messages/broadcast', messagePayload);
+        })
+      );
+
+      // Emit socket event for broadcast
+      socket.emit("broadcastMessage", {
+        senderId: authUser._id,
+        text: messageData.text.trim(),
+        image: messageData.image,
+        timestamp: new Date().toISOString(),
+        isBroadcast: true
+      });
+
+      // Add messages to state
+      const newMessages = messages.map(res => ({
+        ...res.data,
+        chatContent: messageData.text.trim() // Store original text for sender
+      }));
+
+      set(state => ({
+        messages: [...state.messages, ...newMessages]
+      }));
+
+      return messages;
+    } catch (error) {
+      console.error("Error broadcasting message:", error);
+      toast.error(error.response?.data?.message || "Failed to broadcast message");
+      throw error;
+    }
+  },
+  
   
   subscribeToMessages: () => {
     const { selectedUser } = get();
-    if (!selectedUser) return;
-    
     const socket = useAuthStore.getState().socket;
     const authUser = useAuthStore.getState().authUser;
 
     socket.on("newMessage", async (newMessage) => {
-      console.log("New message received:", newMessage);
-      
       let isRelevantMessage = false;
 
-      if (selectedUser.participants) {
-        // For group messages, check if the message is for this group
+      if (newMessage.isBroadcast) {
+        // For broadcast messages, we are the intended receiver
+        isRelevantMessage = newMessage.receiverId === authUser._id;
+      } else if (selectedUser?.participants) {
+        // For group messages
         isRelevantMessage = newMessage.receiverId === selectedUser._id;
       } else {
-        // For direct messages, check if the message is from the selected user
+        // For direct messages
         isRelevantMessage = newMessage.senderId === selectedUser._id;
       }
 
       if (!isRelevantMessage) return;
 
       try {
-        let decryptedNewMessage = "";
-        if(selectedUser.participants){
+        let decryptedNewMessage;
+        let decryptedContent;
+        
+        if (newMessage.isBroadcast) {
+          try {
+            decryptedContent = decryptMessage(newMessage.encryptedText, authUser.privateKey);
+            if (!decryptedContent) {
+              console.log("Broadcast message decryption returned empty content");
+              return; // Skip this message if decryption returns empty
+            }
+          } catch (decryptError) {
+            console.log("Broadcast message decryption failed, might be for another user");
+            return; // Skip this message if decryption fails
+          }
+
           decryptedNewMessage = {
             ...newMessage,
-            chatContent: decryptMessage(newMessage.encryptedText, selectedUser.privateKey)
+            chatContent: decryptedContent
           };
-        }else{
+        } else if (selectedUser?.participants) {
+          // For group messages
+          decryptedContent = decryptMessage(newMessage.encryptedText, selectedUser.privateKey);
           decryptedNewMessage = {
-            ...decryptedNewMessage,
-            chatContent: decryptMessage(newMessage.encryptedText, authUser.privateKey)
+            ...newMessage,
+            chatContent: decryptedContent
+          };
+        } else {
+          // For direct messages
+          decryptedContent = decryptMessage(newMessage.encryptedText, authUser.privateKey);
+          decryptedNewMessage = {
+            ...newMessage,
+            chatContent: decryptedContent
           };
         }
 
-        set(state => ({
-          messages: [...state.messages, decryptedNewMessage],
-        }));
+        // Only add the message if we successfully decrypted it
+        if (decryptedContent) {
+          set(state => ({
+            messages: [...state.messages, decryptedNewMessage],
+          }));
+        }
       } catch (error) {
-        console.error("Error processing new message:", error);
-        toast.error("Failed to decrypt new message");
+        // Only show error toast for non-broadcast messages or when debugging
+        if (!newMessage.isBroadcast) {
+          console.error("Error processing new message:", error);
+          toast.error("Failed to decrypt message");
+        } else {
+          // For broadcast messages, just log it without showing error to user
+          console.log("Skipped broadcast message processing:", error.message);
+        }
       }
     });
 
-    // Join the room for group messages
-    if (selectedUser.participants) {
+    // Join room for group messages
+    if (selectedUser?.participants) {
       socket.emit("joinRoom", selectedUser._id);
     }
   },
+  // Your existing unsubscribeFromMessages remains the same
+
 
   unsubscribeFromMessages: () => {
     const { selectedUser } = get();

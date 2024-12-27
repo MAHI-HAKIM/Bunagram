@@ -43,6 +43,20 @@ io.on("connection", (socket) => {
     socket.to(message.groupId).emit('newMessage', message);
   });
 
+   // Add broadcast message handling
+   socket.on('broadcastMessage', (message) => {
+    // Emit to all connected users except the sender
+    Object.keys(userSocketMap).forEach(receiverId => {
+      if (receiverId !== message.senderId) {
+        io.to(userSocketMap[receiverId]).emit('newMessage', {
+          ...message,
+          isBroadcast: true,
+          receiverId // Add receiver ID for message filtering
+        });
+      }
+    });
+  });
+
   // io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 

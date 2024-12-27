@@ -19,6 +19,10 @@ const messageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isBroadcast: {
+      type: Boolean,
+      default: false,
+    },
     isEncrypted: {
       type: Boolean,
       default: false,
