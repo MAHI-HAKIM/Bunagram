@@ -17,7 +17,6 @@ const BroadcastInput = () => {
       toast.error("Please select an image file");
       return;
     }
-
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);

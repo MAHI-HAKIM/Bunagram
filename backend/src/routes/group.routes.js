@@ -8,5 +8,4 @@ router.post("/create-group", protectRoute, createGroup);
 router.get("/groups/:id", protectRoute, getGroupsForSidebar);
 router.get("/groups/group-members/:id", protectRoute, getSelectedGroupMembers);
 
-
 export default router;

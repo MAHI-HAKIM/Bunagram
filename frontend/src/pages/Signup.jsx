@@ -15,7 +15,6 @@ const Signup = () => {
 
   const {signup, isSigningUp } = useAuthStore();
 
-  // console.log("SIGNUP function", signup);
   const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
@@ -143,7 +142,6 @@ const Signup = () => {
       </div>
 
       {/* right side */}
-
       <AuthImagePattern
         title="Join our community"
         subtitle="Connect with friends, share moments, and stay in touch with your loved ones."

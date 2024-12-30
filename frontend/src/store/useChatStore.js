@@ -27,18 +27,17 @@ export const useChatStore = create((set, get) => ({
   getMessages: async (userId) => {
 
     set({ isMessagesLoading: true });
+
     try {
       let authUser = useAuthStore.getState().authUser;
       let selectedUser = get().selectedUser;
       // Fetch messages
-      // console.log("Selected user is ", selectedUser);
       let res;
       if (selectedUser.participants) {
         res = await axiosInstance.get(`/messages/${selectedUser._id}`);
 
       }else{
          res = await axiosInstance.get(`/messages/${userId}`);
-
       }
       // Ensure data is defined
       if (!res.data) {
@@ -124,7 +123,6 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response?.data?.message || "Failed to send message");
     }
   },
-
  
   broadcastMessage: async (messageData) => {
     try {
@@ -143,7 +141,6 @@ export const useChatStore = create((set, get) => ({
       const messages = await Promise.all(
         receivers.map(async (receiver) => {
           // Encrypt message with receiver's public key
-          console.log("encrypted with receiver's public key of ", receiver.fullName);
           const encryptedText = encryptMessage(messageData.text.trim(), receiver.publicKey);
           
           const messagePayload = {
@@ -185,7 +182,6 @@ export const useChatStore = create((set, get) => ({
     }
   },
   
-  
   subscribeToMessages: () => {
     const { selectedUser } = get();
     const socket = useAuthStore.getState().socket;
@@ -218,8 +214,9 @@ export const useChatStore = create((set, get) => ({
               console.log("Broadcast message decryption returned empty content");
               return; // Skip this message if decryption returns empty
             }
-          } catch (decryptError) {
+          } catch (error) {
             console.log("Broadcast message decryption failed, might be for another user");
+            console.error(error);
             return; // Skip this message if decryption fails
           }
 
@@ -242,7 +239,6 @@ export const useChatStore = create((set, get) => ({
             chatContent: decryptedContent
           };
         }
-
         // Only add the message if we successfully decrypted it
         if (decryptedContent) {
           set(state => ({
@@ -266,8 +262,6 @@ export const useChatStore = create((set, get) => ({
       socket.emit("joinRoom", selectedUser._id);
     }
   },
-  // Your existing unsubscribeFromMessages remains the same
-
 
   unsubscribeFromMessages: () => {
     const { selectedUser } = get();

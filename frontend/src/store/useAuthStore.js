@@ -93,13 +93,12 @@ export const useAuthStore = create((set, get) => ({
     });
     socket.connect();
 
-    console.log("Socket is " , socket);
-
     set({ socket: socket });
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
     });
+    
      // Add listeners for group-related events
      socket.on("joinedGroup", (groupId) => {
       console.log(`Successfully joined group ${groupId}`);

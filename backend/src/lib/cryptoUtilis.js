@@ -13,7 +13,6 @@ export const generateKeyPair = () => {
         format: 'pem',
         },
     });
-    
     // Return the key pair
     return { publicKey, privateKey };
 };

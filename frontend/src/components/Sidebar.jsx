@@ -89,7 +89,7 @@ const Sidebar = () => {
                 >
                   <div className="relative mx-auto lg:mx-0">
                     <img
-                      src={group.groupImage || "/avatar.png"} // Default image if no group image
+                      src={group.groupImage || "/groupavatar.png"} // Default image if no group image
                       alt={group.groupName}
                       className="size-12 object-cover rounded-full"
                     />

@@ -31,8 +31,6 @@ const MessageInput = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
-    // console.log("selectedUser", selectedUser);
-
     if (!text.trim() && !imagePreview) return;
       try {
         console.log("message to user");

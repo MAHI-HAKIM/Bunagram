@@ -16,7 +16,6 @@ export const getUsersForSidebar = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   };
-  
 
 export const getMessages = async (req, res) => {
     try {
@@ -41,14 +40,11 @@ export const getMessages = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   };
-  
 
 export const fetchGroupParticipants = async (req, res) => {
   try {
     // Extract the group ID from the request parameters
     const {id : groupId } = req.params;
-
-    // console.log("groupId is ", groupId);
 
     // Validate if the group ID is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(groupId)) {
@@ -63,15 +59,11 @@ export const fetchGroupParticipants = async (req, res) => {
       return res.status(404).json({ error: "Group not found" });
     }
 
-    // console.log("Selected group is ", selectedGroup);
-
     // Extract participant IDs from the group document
     const participantIds = selectedGroup.participants;
 
     // Fetch user details based on participant IDs (excluding password)
     const groupParticipants = await User.find({ _id: { $in: participantIds } }).select("fullName profilePic");
-
-    // console.log("Group participants are ", groupParticipants);
 
     // Return the participants' details
     res.status(200).json(groupParticipants);
@@ -88,8 +80,6 @@ export const sendMessage = async (req, res) => {
       const { id: receiverId } = req.params;
       const senderId = req.user._id;
 
-      console.log("receiverId is ", receiverId, "senderId is ", senderId);
-  
       let imageUrl;
       if (image) {
         // Upload base64 image to cloudinary
@@ -145,20 +135,15 @@ export const sendGroupMessage = async (req, res) => {
 
     await newMessage.save();
 
-    console.log("Saved to database ", newMessage);
-
-
   }catch(error){
     console.log("Error in sendGroupMessage controller: ", error.message);
     res.status(500).json({ error: "Internal server error in group message" });
   }
 };
-// controllers/message.controller.js
+
 export const broadcastMessage = async (req, res) => {
   try {
-    // console.log("Broadcasting message... " , req.body.receiverId);
     const senderId = req.user._id;
-    // console.log("senderId is ", senderId);
     const { encryptedText, image, receiverId } = req.body;
 
     let imageUrl;
@@ -185,8 +170,6 @@ export const broadcastMessage = async (req, res) => {
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
-    
-
      res.status(200).json(newMessage);
   } catch (error) {
     console.error("Error in broadcastMessage controller:", error);

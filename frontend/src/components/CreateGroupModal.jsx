@@ -57,12 +57,6 @@ const CreateGroupModal = ({ contacts, onClose }) => {
       return;
     }
 
-    // // Debugging the final values before submitting
-    // console.log("Final Group Data before submission:");
-    // console.log("Group Name:", groupName);
-    // console.log("Selected Participants:", selectedParticipants);
-    // console.log("Group Image (Base64):", groupImage);
-
     // Call your group creation function (e.g., to create group via API)
     const groupData = { groupName, groupImage, participants: selectedParticipants };
     createGroup(groupData);

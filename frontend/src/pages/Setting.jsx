@@ -8,6 +8,7 @@ const PREVIEW_MESSAGES = [
 ];
 
 const Setting = () => {
+  
   const { theme, setTheme } = useThemeStore();
 
   return (

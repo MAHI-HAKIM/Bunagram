@@ -12,7 +12,7 @@ const ChatContainer = () => {
     getMessages,
     isMessagesLoading,
     selectedUser,
-    groupParticipants, // Add participants' data from the store
+    groupParticipants, 
     subscribeToMessages,
     getGroupParticipants,
     unsubscribeFromMessages,
@@ -56,7 +56,7 @@ const ChatContainer = () => {
     if (senderId === authUser._id) return authUser.profilePic || "/avatar.png";
     if (selectedUser.participants) {
       const participant = groupParticipants.find((user) => user._id === senderId);
-      return participant ? participant.profilePic || "/avatar.png" : "/avatar.png";
+      return participant ? participant.profilePic  : "/groupavatar.png";
     }
     return selectedUser.profilePic || "/avatar.png";
   };

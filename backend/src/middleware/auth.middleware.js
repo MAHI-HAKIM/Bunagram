@@ -10,21 +10,16 @@ export const protectRoute = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "Unauthorized - No Token Provided" });
     }
-
     // Verify the JWT token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     // Find the user by the ID in the decoded token
     const user = await User.findById(decoded.userId).select("-password");
-
     // If no user is found, send a Not Found response
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     // Attach user to request object for use in route handlers
     req.user = user;
-
     // Proceed to the next middleware
     next();
   } catch (error) {

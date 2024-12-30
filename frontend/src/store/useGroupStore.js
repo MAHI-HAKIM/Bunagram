@@ -45,7 +45,6 @@ export const useGroupStore = create((set, get) => ({
         const res = await axiosInstance.get(`/groups/group-members/${selectedGroup._id}`);
         const groupMembers = res.data;
 
-        // Filter members if needed (e.g., checking if the logged-in user is part of the group)
         const filteredMembers = groupMembers.filter((member) => member._id === authUser._id);
         set({ selectedGroupMembers: filteredMembers });
       } catch (error) {
@@ -55,5 +54,5 @@ export const useGroupStore = create((set, get) => ({
   },
 
   setSelectedGroup: (group) => set({ selectedGroup: group }),
-
+  
 }));

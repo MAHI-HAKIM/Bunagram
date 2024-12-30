@@ -23,5 +23,4 @@ router.post("/groupMessage/send/:id",protectRoute,sendGroupMessage);
 
 router.post("/broadcast",protectRoute,broadcastMessage);
 
-
 export default router;

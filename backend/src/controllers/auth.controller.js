@@ -6,10 +6,8 @@ import cloudinary from "../lib/cloudinary.js";
 
 export const checkAuth = (req, res) => {
   try {
-    // console.log("User in checkAuth and checking", req.user);
     res.status(200).json(req.user);
   } catch (error) {
-    console.log("Couldnt verify shit");
     console.log("Error in checkAuth controller", error.message);
     res.status(500).json({ message: "Internal Server Error while checking Auth in backend" });
   }
@@ -21,7 +19,6 @@ export const signup = async (req, res) => {
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
     if (password.length < 6) {
       return res.status(400).json({ message: "Password must be at least 6 characters" });
     }
@@ -124,33 +121,3 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-export const getPublicKey = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("publicKey");
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.status(200).json({ publicKey: user.publicKey });
-  } catch (error) {
-    console.error("Error fetching public key: ", error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-export const getKeys = async (req, res) => {
-  try {
-    // Retrieve the currently authenticated user from the request object (from middleware)
-    const user = await User.findById(req.user._id).select("publicKey privateKey");
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Only send back the public key to the client
-    res.status(200).json({ publicKey: user.publicKey , privateKey: user.privateKey });
-  } catch (error) {
-    console.error("Error fetching keys: ", error.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-

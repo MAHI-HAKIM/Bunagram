@@ -13,7 +13,6 @@ export const encryptMessage = (message, publicKey) => {
   if (!encryptedMessage) {
     throw new Error('Encryption failed');
   }
-
   // Return the encrypted message as a base64 string
   return encryptedMessage;
 };
@@ -31,7 +30,6 @@ export const decryptMessage = (encryptedMessage, privateKey) => {
   if (!decryptedMessage) {
     throw new Error('Decryption failed');
   }
-
   // Return the decrypted message
   return decryptedMessage;
 };

@@ -21,11 +21,11 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     publicKey: {
-      type: String, // Store the private key as a string
+      type: String, 
       required: true,
     },
     privateKey: {
-      type: String, // Store the private key as a string
+      type: String, 
       required: true,
     },
   },

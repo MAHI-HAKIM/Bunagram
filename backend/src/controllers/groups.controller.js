@@ -4,36 +4,29 @@ import User from "../models/user.model.js";
 import Group from "../models/group.model.js";
 import cloudinary from "../lib/cloudinary.js";
 
-
 export const createGroup = async (req, res) => {
     const { groupName, participants, groupImage } = req.body;
     const userId = req.user._id; // Corrected extraction of userId
   
     try {
-
-        // console.log("group Image is ", groupImage);
       // Check if all required fields are provided
       if (!groupName || !participants) {
         return res.status(400).json({ message: "All fields are required" });
       }
-  
       // Ensure the user is included in the participants list
       if (!participants.includes(userId)) {
         participants.push(userId);
       }
-  
       // Ensure there are at least two participants
       if (participants.length < 2) {
         return res.status(400).json({ message: "Group must have at least 2 participants" });
       }
-  
       // Check if group image is provided, and upload it if so
       let uploadedGroupImage = "";
       if (groupImage) {
         const uploadResponse = await cloudinary.uploader.upload(groupImage);
         uploadedGroupImage = uploadResponse.secure_url;
       }
- 
       // Check if a group with the same name already exists
       const groupExists = await Group.findOne({ groupName });
       if (groupExists) {
@@ -68,14 +61,11 @@ export const createGroup = async (req, res) => {
     }
   };
   
-
 export const getGroupsForSidebar = async (req,res)=>{
     try{
         const {id : loggedInUserId} = req.params;
-        console.log("User is ", loggedInUserId);
         const groups = await Group.find({participants: loggedInUserId});
         res.status(200).json(groups);
-
     }catch(error){
         console.log("Error in getGroupsForSidebar controller", error.message);
         res.status(500).json({ message: "Internal Server Error while getting groups in backend" });

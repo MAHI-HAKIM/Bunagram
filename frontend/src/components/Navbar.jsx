@@ -1,10 +1,8 @@
-
-// Navbar.jsx
 import { Link } from "react-router-dom";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import { Coffee, LogOut, Settings, User } from "lucide-react";
-import BroadcastInput from "./BroadCastInput";
+import BroadcastInput from "./BroadcastInput";
 
 const Navbar = () => {
   const { logout, authUser } = useAuthStore();
