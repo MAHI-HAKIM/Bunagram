@@ -103,8 +103,7 @@ This project is a **real-time messaging application** built using **Socket.IO** 
 #### Backend
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo.git
-   cd your-repo/backend
+   git clone https:github.com/MAHI-HAKIM/Bunagram/
    ```
 2. Install dependencies:
    ```bash
@@ -138,15 +137,18 @@ This project is a **real-time messaging application** built using **Socket.IO** 
 
 Below is a simplified UML diagram illustrating the interaction between components in the application:
 
-**Diagram will be placed here**
+https:github.com/MAHI-HAKIM/Bunagram/docs/UML.png
 
 ---
 
 ## Screenshots
 
-### Application Interface
-
-**Screenshot will be placed here**
+### Signup Page
+https:github.com/MAHI-HAKIM/Bunagram/docs/signupPage.png
+### Chats Page
+https:github.com/MAHI-HAKIM/Bunagram/docs/chats.png
+### Chats Container 
+https:github.com/MAHI-HAKIM/Bunagram/docs/chatcontainer.png
 
 ---
 
