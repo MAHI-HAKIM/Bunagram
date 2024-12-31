@@ -144,11 +144,11 @@ Below is a simplified UML diagram illustrating the interaction between component
 ## Screenshots
 
 ### Signup Page
-![Application Screenshot](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/singupPage.png)
+(https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/singupPage.png)
 ### Chats Page
-![Application Screenshot](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/chats.png)
+(https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/chats.png)
 ### Chats Container 
-![Application Screenshot](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/chatcontainer.png)
+(https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/chatcontainer.png)
 
 ---
 
