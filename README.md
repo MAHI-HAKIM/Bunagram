@@ -137,18 +137,18 @@ This project is a **real-time messaging application** built using **Socket.IO** 
 
 Below is a simplified UML diagram illustrating the interaction between components in the application:
 
-https:github.com/MAHI-HAKIM/Bunagram/docs/UML.png
+![UML Diagram](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/UML.png)
 
 ---
 
 ## Screenshots
 
 ### Signup Page
-https://github.com/MAHI-HAKIM/Bunagram/docs/signupPage.png
+![Application Screenshot](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/singupPage.png)
 ### Chats Page
-https://github.com/MAHI-HAKIM/Bunagram/docs/chats.png
+![Application Screenshot](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/chats.png)
 ### Chats Container 
-https://github.com/MAHI-HAKIM/Bunagram/docs/chatcontainer.png
+![Application Screenshot](https://github.com/MAHI-HAKIM/Bunagram/blob/main/docs/chatcontainer.png)
 
 ---
 
