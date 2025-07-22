@@ -31,7 +31,6 @@ tmp/
 temp/
 # Coverage reports
 coverage/
-
 # Test files
 *.spec.js
 *.test.js
@@ -46,7 +45,6 @@ coverage/
 .nuxt/
 # SvelteKit build output
 .svelte-kit/
-
 # Gatsby files
 .cache/
 public/
