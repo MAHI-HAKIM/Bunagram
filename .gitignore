@@ -38,14 +38,12 @@ coverage/
 *.spec.ts
 *.test.ts
 .jest/
-
 # Parcel-bundler cache
 .cache/
 # Next.js output
 .next/
 # Nuxt.js output
 .nuxt/
-
 # SvelteKit build output
 .svelte-kit/
 
