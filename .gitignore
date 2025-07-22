@@ -54,14 +54,12 @@ public/
 expo-app.json
 # MongoDB dumps
 dump/
-
 # Miscellaneous
 *.bak
 *.pid
 *.seed
 *.tar
 *.gz
-
 # Lock files (if unnecessary)
 package-lock.json
 yarn.lock
