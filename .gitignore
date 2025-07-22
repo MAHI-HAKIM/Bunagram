@@ -43,10 +43,8 @@ coverage/
 
 # Parcel-bundler cache
 .cache/
-
 # Next.js output
 .next/
-
 # Nuxt.js output
 .nuxt/
 
