@@ -26,11 +26,9 @@ Thumbs.db
 *.swo
 # Dependency directory for serverless (if applicable)
 .serverless/
-
 # Temporary files
 tmp/
 temp/
-
 # Coverage reports
 coverage/
 
