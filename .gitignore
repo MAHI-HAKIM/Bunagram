@@ -24,7 +24,6 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-
 # Dependency directory for serverless (if applicable)
 .serverless/
 
