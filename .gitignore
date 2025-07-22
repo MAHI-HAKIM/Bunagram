@@ -12,7 +12,6 @@ debug.log
 .env
 .env.local
 .env.*.local
-
 # Build Output
 dist/
 build/
