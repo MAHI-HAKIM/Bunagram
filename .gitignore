@@ -49,6 +49,7 @@ coverage/
 
 # Next.js output
 .next/
+
 # Nuxt.js output
 .nuxt/
 # SvelteKit build output
