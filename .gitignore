@@ -8,6 +8,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 debug.log
+
 # Environment Variables
 .env
 .env.local
