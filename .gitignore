@@ -50,8 +50,9 @@ coverage/
 # Next.js output
 .next/
 
-# Nuxt.js output
-.nuxt/
+# Next.js output
+.next/
+
 # SvelteKit build output
 .svelte-kit/
 # Gatsby files
