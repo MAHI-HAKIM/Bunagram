@@ -43,6 +43,7 @@ coverage/
 *.spec.ts
 *.test.ts
 .jest/
+
 # Parcel-bundler cache
 .cache/
 # Next.js output
