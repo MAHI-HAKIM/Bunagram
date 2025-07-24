@@ -55,13 +55,16 @@ coverage/
 
 # SvelteKit build output
 .svelte-kit/
+
 # Gatsby files
 .cache/
 public/
+
 # React Native
 .expo/
 *.expo/
 expo-app.json
+
 # MongoDB dumps
 dump/
 # Miscellaneous
