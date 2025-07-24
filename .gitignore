@@ -30,6 +30,7 @@ Thumbs.db
 
 # Dependency directory for serverless (if applicable)
 .serverless/
+
 # Temporary files
 tmp/
 temp/
